@@ -1,0 +1,141 @@
+# ==============================================================================
+# ARQUIVO HTACCESS PARA O SITE DR. MARCELO MOURA (v1.1)
+# ==============================================================================
+# NOTA IMPORTANTE:
+# 1. VERIFIQUE se o domínio 'www.marcelomoura.adv.br' está correto abaixo.
+# 2. CONFIRME com sua hospedagem se os módulos Apache 'mod_rewrite',
+#    'mod_expires', e 'mod_deflate' estão ATIVOS.
+# ==============================================================================
+
+# Ativar o motor de reescrita (Rewrite Engine) - Necessário para as regras abaixo
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # -- SEGURANÇA E CANONICALIZAÇÃO --
+
+    # Forçar HTTPS e WWW de forma combinada e eficiente
+    # Redireciona para https://www.marcelomoura.adv.br se não for HTTPS ou não for www.
+    # !! ATENÇÃO: AJUSTE O DOMÍNIO ABAIXO SE NECESSÁRIO !!
+    RewriteCond %{HTTPS} off [OR]
+    RewriteCond %{HTTP_HOST} !^www\.marcelomoura\.adv\.br$ [NC]
+    RewriteRule ^(.*)$ https://www.marcelomoura.adv.br%{REQUEST_URI} [L,R=301,NE]
+
+    # Prevenir hotlinking de imagens e outros arquivos comuns
+    # Permite acesso direto e do próprio domínio
+    # !! ATENÇÃO: AJUSTE O DOMÍNIO ABAIXO SE NECESSÁRIO !!
+    RewriteCond %{HTTP_REFERER} !^$
+    RewriteCond %{HTTP_REFERER} !^https?://(www\.)?marcelomoura\.adv\.br/.*$ [NC]
+    RewriteRule \.(jpg|jpeg|png|gif|webp|svg|pdf|mp4|woff|woff2|ttf|otf|ico)$ - [F,NC,L]
+
+    # Proteção contra acesso direto a arquivos de configuração e sensíveis
+    <FilesMatch "\.(htaccess|htpasswd|ini|log|sh|bak|config|sql|env)$">
+        # Apache 2.4+
+        <IfModule mod_authz_core.c>
+            Require all denied
+        </IfModule>
+        # Apache 2.2
+        <IfModule !mod_authz_core.c>
+            Order allow,deny
+            Deny from all
+        </IfModule>
+    </FilesMatch>
+
+    # -- PÁGINAS DE ERRO PERSONALIZADAS --
+
+    # Página de erro 404 (Arquivo não encontrado)
+    ErrorDocument 404 /404.html
+
+    # [OPCIONAL] Definir outras páginas de erro se existirem
+    # ErrorDocument 403 /erro_acesso.html
+    # ErrorDocument 500 /erro_servidor.html
+
+    # -- REDIRECIONAMENTOS (OPCIONAL) --
+
+    # [OPCIONAL] Redirecionamentos 301 de páginas antigas para novas
+    # Use se o site tinha URLs diferentes anteriormente. Remova o '#' para ativar.
+    # Exemplo: Redirect 301 /pagina-antiga.html https://www.marcelomoura.adv.br/nova-pagina.html
+    # Exemplo: Redirect 301 /contato.php https://www.marcelomoura.adv.br/#contato
+
+</IfModule> # Fim do mod_rewrite.c
+
+# -- PERFORMANCE --
+
+# Configuração de Cache do Navegador (Expires Headers)
+# Requer mod_expires ativo
+<IfModule mod_expires.c>
+    ExpiresActive On
+    # Define um cache padrão de 1 mês para tipos não especificados
+    ExpiresDefault                              "access plus 1 month"
+
+    # HTML: Não cachear ou cachear por pouco tempo (ex: 1 hora) para atualizações rápidas
+    ExpiresByType text/html                     "access plus 0 seconds"
+    # ExpiresByType text/html                     "access plus 1 hour"
+
+    # Dados (JSON, XML): Geralmente não cacheados ou por pouco tempo
+    ExpiresByType application/json              "access plus 0 seconds"
+    ExpiresByType application/ld+json           "access plus 0 seconds"
+    ExpiresByType application/xml               "access plus 0 seconds"
+    ExpiresByType text/xml                      "access plus 0 seconds"
+
+    # Favicon e Ícones: Cachear por 1 semana
+    ExpiresByType image/vnd.microsoft.icon      "access plus 1 week"
+    ExpiresByType image/x-icon                  "access plus 1 week"
+    ExpiresByType image/svg+xml                 "access plus 1 month" # SVG como ícone
+
+    # Imagens: Cachear por 1 mês
+    ExpiresByType image/gif                     "access plus 1 month"
+    ExpiresByType image/png                     "access plus 1 month"
+    ExpiresByType image/jpg                     "access plus 1 month"
+    ExpiresByType image/jpeg                    "access plus 1 month"
+    ExpiresByType image/webp                    "access plus 1 month"
+
+    # CSS e JavaScript: Cachear por 1 ano (assumindo versionamento ou cache busting)
+    ExpiresByType text/css                      "access plus 1 year"
+    ExpiresByType application/javascript        "access plus 1 year"
+    ExpiresByType text/javascript               "access plus 1 year" # Tipo MIME alternativo
+
+    # Fontes Web: Cachear por 1 ano
+    ExpiresByType font/otf                      "access plus 1 year"
+    ExpiresByType font/ttf                      "access plus 1 year"
+    ExpiresByType font/woff                     "access plus 1 year"
+    ExpiresByType font/woff2                    "access plus 1 year"
+    ExpiresByType application/font-woff         "access plus 1 year" # Tipo MIME alternativo
+    ExpiresByType application/vnd.ms-fontobject "access plus 1 year" # EOT
+
+    # Outros (PDF, Vídeos): Cachear por 1 mês
+    ExpiresByType application/pdf               "access plus 1 month"
+    ExpiresByType video/mp4                     "access plus 1 month"
+    ExpiresByType video/webm                    "access plus 1 month"
+</IfModule> # Fim do mod_expires.c
+
+# Compressão de Recursos (Gzip/Deflate)
+# Requer mod_deflate ativo
+<IfModule mod_deflate.c>
+    # Ativar compressão
+    SetOutputFilter DEFLATE
+
+    # Nível de compressão (1=rápido, 9=máximo, 6=padrão)
+    DeflateCompressionLevel 6
+
+    # Tipos de arquivos a serem comprimidos (MIME types)
+    AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript
+    AddOutputFilterByType DEFLATE application/javascript application/x-javascript
+    AddOutputFilterByType DEFLATE application/xml application/xhtml+xml application/rss+xml
+    AddOutputFilterByType DEFLATE application/json application/ld+json
+    AddOutputFilterByType DEFLATE image/svg+xml
+    AddOutputFilterByType DEFLATE font/otf font/ttf # Fontes podem ser comprimidas
+    AddOutputFilterByType DEFLATE application/font-woff application/font-woff2 # Tipos MIME alternativos
+
+    # Lidar com proxies e cabeçalhos Vary
+    Header append Vary User-Agent env=!dont-vary
+    Header append Vary Accept-Encoding
+
+    # Correção para navegadores antigos/problemáticos
+    BrowserMatch ^Mozilla/4 gzip-only-text/html
+    BrowserMatch ^Mozilla/4\.0[678] no-gzip
+    BrowserMatch \bMSIE !no-gzip !gzip-only-text/html
+</IfModule> # Fim do mod_deflate.c
+
+# ==============================================================================
+# FIM DO ARQUIVO HTACCESS
+# ==============================================================================

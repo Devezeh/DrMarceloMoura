@@ -1,0 +1,1234 @@
+/*------------------------------------------------------------------
+  Style Sheet for Dr. Marcelo Moura - Advocacia Especializada
+  Version: 1.5 (Improvements based on analysis)
+  Author: [Seu Nome/Empresa Aqui - opcional]
+-------------------------------------------------------------------*/
+
+/*------------------------------------------------------------------
+  1. Root Variables & Global Resets
+-------------------------------------------------------------------*/
+:root {
+    /* Colors */
+    --primary-color: #1a3e72; /* Azul escuro */
+    --secondary-color: #d4af37; /* Dourado */
+    --dark-color: #333333; /* Cinza bem escuro para texto */
+    --light-color: #f8f9fa; /* Cinza claro para fundos */
+    --gray-color: #6c757d; /* Cinza médio */
+    --white-color: #ffffff;
+    --danger-color: #dc3545; /* Vermelho para erros/alertas */
+    --success-color: #28a745; /* Verde para sucesso */
+    --whatsapp-color: #25D366; /* Verde do WhatsApp */
+    --whatsapp-hover-color: #1DA851; /* Verde mais escuro do WhatsApp */
+
+    /* Fonts */
+    --font-primary: 'Inter', sans-serif;
+    --font-secondary: 'Playfair Display', serif;
+
+    /* Typography */
+    --base-font-size: 16px;
+    --line-height-base: 1.7;
+    --line-height-heading: 1.3;
+
+    /* Layout */
+    --container-width: 1200px;
+    --container-padding: 15px;
+
+    /* UI Elements */
+    --border-radius: 5px;
+    --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    --transition-speed: 0.3s;
+}
+
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: var(--base-font-size);
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    font-family: var(--font-primary);
+    line-height: var(--line-height-base);
+    color: var(--dark-color);
+    background-color: var(--white-color);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Basic element styling */
+ul, ol {
+    list-style: none;
+}
+
+a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: color var(--transition-speed) ease;
+}
+
+a:hover, a:focus-visible {
+    color: var(--secondary-color);
+    text-decoration: underline;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    vertical-align: middle; /* Avoid bottom space */
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-secondary);
+    font-weight: 700;
+    color: var(--primary-color);
+    line-height: var(--line-height-heading);
+    margin-bottom: 0.8em;
+}
+
+h1 { font-size: 2.8rem; }
+h2 { font-size: 2.2rem; }
+h3 { font-size: 1.8rem; }
+h4 { font-size: 1.4rem; }
+
+p {
+    margin-bottom: 1em;
+}
+
+/*------------------------------------------------------------------
+  2. Layout & Container
+-------------------------------------------------------------------*/
+.container {
+    width: 90%;
+    max-width: var(--container-width);
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: var(--container-padding);
+    padding-right: var(--container-padding);
+}
+
+.section-padding {
+    padding-top: 80px;
+    padding-bottom: 80px;
+}
+
+.bg-light {
+    background-color: var(--light-color);
+}
+
+.section-title {
+    text-align: center;
+    margin-bottom: 60px;
+    font-size: 2.4rem;
+    color: var(--primary-color);
+    position: relative;
+}
+
+.section-title::after {
+    content: '';
+    display: block;
+    width: 80px;
+    height: 4px;
+    background: var(--secondary-color);
+    margin: 15px auto 0;
+    border-radius: 2px;
+}
+
+/*------------------------------------------------------------------
+  3. Accessibility Helpers
+-------------------------------------------------------------------*/
+/* Screen Reader Only */
+.sr-only {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+}
+
+/* Skip Link */
+.skip-link {
+    position: absolute;
+    top: -50px; /* Start off screen */
+    left: 0;
+    background: var(--primary-color);
+    color: var(--white-color);
+    padding: 10px 15px;
+    z-index: 1001; /* Above header */
+    transition: top var(--transition-speed) ease-in-out;
+    border-radius: 0 0 var(--border-radius) 0;
+}
+
+.skip-link:focus {
+    top: 0; /* Bring into view on focus */
+    text-decoration: none;
+    outline: 2px solid var(--secondary-color);
+    outline-offset: 2px;
+}
+
+/* Focus Visible styles for keyboard navigation */
+/* Applied to naturally focusable elements and elements made focusable */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+[tabindex="0"]:focus-visible { /* Generic for elements made focusable */
+    outline: 3px solid var(--secondary-color);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.3); /* Optional glow */
+    border-radius: var(--border-radius);
+}
+/* Remove default outline when focus-visible is supported */
+*:focus {
+    outline: none;
+}
+
+
+/*------------------------------------------------------------------
+  4. Header & Navigation
+-------------------------------------------------------------------*/
+.site-header {
+    background: var(--white-color);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: sticky; /* Make header sticky */
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    padding: 10px 0;
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+}
+
+.logo a {
+    text-decoration: none;
+    display: inline-block;
+    color: inherit; /* Prevent link color override */
+}
+.logo a:hover, .logo a:focus-visible {
+    text-decoration: none;
+    outline: none; /* Handled globally by focus-visible */
+    box-shadow: none;
+    color: inherit;
+}
+
+.logo-title {
+    display: block;
+    font-family: var(--font-secondary);
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    line-height: 1.1;
+}
+
+.logo-subtitle {
+    display: block;
+    font-family: var(--font-primary);
+    font-size: 0.85rem;
+    color: var(--gray-color);
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.main-nav ul {
+    display: flex;
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+    gap: 10px; /* Spacing between nav items */
+}
+
+.main-nav .nav-link {
+    color: var(--dark-color);
+    text-decoration: none;
+    padding: 15px 18px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    position: relative;
+    transition: color var(--transition-speed) ease;
+    display: inline-block;
+    border-radius: var(--border-radius); /* For focus outline */
+    font-family: var(--font-primary);
+}
+
+.main-nav .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 2px;
+    background-color: var(--secondary-color);
+    transition: width var(--transition-speed) ease;
+}
+
+.main-nav .nav-link:hover,
+.main-nav .nav-link:focus-visible,
+.main-nav .nav-link.active { /* .active is managed by JS */
+    color: var(--secondary-color);
+    text-decoration: none; /* Remove underline on hover */
+}
+
+.main-nav .nav-link:hover::after,
+.main-nav .nav-link:focus-visible::after,
+.main-nav .nav-link.active::after {
+    width: 60%; /* Underline effect */
+}
+
+/* Style for the current page link (via JS) */
+.main-nav .nav-link.active {
+    font-weight: 700;
+    color: var(--secondary-color);
+}
+
+
+/*------------------------------------------------------------------
+  5. Hero Section
+-------------------------------------------------------------------*/
+.hero-section {
+    /* VERIFICAR caminho da imagem de fundo */
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('./assets/images/banner.jpg') no-repeat center center/cover;
+    color: var(--white-color);
+    text-align: center;
+    padding: 140px 0 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 60vh;
+}
+
+.hero-content {
+    max-width: 800px;
+}
+
+.hero-content h1 {
+    font-size: 3rem;
+    margin-bottom: 25px;
+    color: var(--white-color);
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.7);
+}
+
+.hero-content p {
+    font-size: 1.3rem;
+    margin-bottom: 40px;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+    font-weight: 400;
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.7);
+}
+
+
+/*------------------------------------------------------------------
+  6. Buttons
+-------------------------------------------------------------------*/
+.btn {
+    display: inline-block;
+    padding: 12px 30px;
+    text-decoration: none;
+    border-radius: var(--border-radius);
+    font-weight: 700;
+    transition: all var(--transition-speed) ease;
+    border: 2px solid transparent; /* Base border */
+    cursor: pointer;
+    font-size: 1rem;
+    text-align: center;
+    line-height: 1.5;
+    font-family: var(--font-primary);
+}
+.btn:hover, .btn:focus-visible {
+    text-decoration: none;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn-primary {
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+    border-color: var(--secondary-color);
+}
+.btn-primary:hover, .btn-primary:focus-visible {
+    background-color: #c19b2e; /* Darker gold */
+    border-color: #c19b2e;
+    color: var(--white-color);
+}
+
+.btn-secondary {
+    background-color: var(--white-color);
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+.btn-secondary:hover, .btn-secondary:focus-visible {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: var(--white-color);
+}
+
+.btn-icon {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px; /* Space between icon and text */
+}
+.btn-icon i {
+    line-height: 1; /* Ensure icon aligns well */
+}
+
+
+/*------------------------------------------------------------------
+  7. About Section
+-------------------------------------------------------------------*/
+.about-content {
+    display: grid;
+    grid-template-columns: 1fr; /* Default to single column */
+    align-items: center;
+    gap: 50px;
+}
+
+/* Apply two columns on medium screens and up */
+@media (min-width: 768px) {
+    .about-content {
+        grid-template-columns: 1fr 2fr;
+    }
+}
+
+
+.about-image img {
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    object-fit: cover;
+    width: 100%;
+    max-width: 400px; /* Limit image size */
+    margin: 0 auto; /* Center image when in single column */
+    aspect-ratio: 1 / 1;
+}
+
+.about-text h3 {
+    margin-top: 0;
+    font-size: 2rem;
+    color: var(--primary-color);
+}
+
+.about-text p {
+     margin-bottom: 1em;
+}
+
+
+/*------------------------------------------------------------------
+  8. Practice Areas Section
+-------------------------------------------------------------------*/
+.areas-grid {
+    display: grid;
+    /* Creates flexible columns: minimum 280px wide, fitting as many as possible */
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+}
+
+.area-card {
+    background: var(--white-color);
+    padding: 35px 30px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+    text-align: center;
+    border: 1px solid #eee;
+    /* Removed cursor: default; as it's not interactive */
+}
+
+.area-card:hover { /* Hover effect remains for visual feedback */
+    transform: translateY(-8px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+}
+/* Removed :focus-within and :focus-visible specific to area-card */
+
+.area-icon {
+    font-size: 2.5rem;
+    color: var(--secondary-color);
+    margin-bottom: 20px;
+    display: inline-block;
+}
+
+.area-card h3 {
+    color: var(--primary-color);
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 1.5rem;
+}
+.area-card p {
+    color: var(--gray-color);
+    font-size: 0.95rem;
+    margin-bottom: 0;
+}
+
+/*------------------------------------------------------------------
+  9. Testimonials Section
+-------------------------------------------------------------------*/
+.testimonials-section {
+    background-color: var(--white-color);
+}
+
+.testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+.testimonial-card {
+    background: var(--light-color);
+    padding: 30px;
+    border-radius: var(--border-radius);
+    border-left: 5px solid var(--secondary-color);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+    position: relative;
+    margin: 0;
+}
+.testimonial-card:hover { /* Hover effect remains */
+     transform: translateY(-5px);
+     box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+}
+/* Removed :focus-visible specific to testimonial-card, not typically focusable */
+
+
+.testimonial-card p {
+    font-style: italic;
+    color: var(--dark-color);
+    margin-bottom: 20px;
+    font-size: 1rem;
+    position: relative;
+    padding-left: 25px;
+}
+
+.testimonial-card p::before {
+    content: '\f10d'; /* Font Awesome quote-left */
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    color: var(--secondary-color);
+    font-size: 1.5rem;
+    position: absolute;
+    left: -5px;
+    top: -5px;
+    opacity: 0.8;
+}
+
+.testimonial-card footer {
+    margin-top: 15px;
+    text-align: right;
+}
+
+.testimonial-card cite {
+    display: block;
+    font-weight: 700;
+    color: var(--primary-color);
+    font-style: normal;
+}
+
+.testimonial-card span {
+    font-size: 0.85rem;
+    color: var(--gray-color);
+}
+
+/*------------------------------------------------------------------
+  10. Contact Section
+-------------------------------------------------------------------*/
+.contact-container {
+    display: grid;
+    grid-template-columns: 1fr; /* Default single column */
+    gap: 50px;
+    align-items: start;
+}
+
+/* Apply two columns on medium screens and up */
+@media (min-width: 992px) {
+    .contact-container {
+        grid-template-columns: 1fr 1.2fr;
+    }
+}
+
+.contact-info h3,
+.contact-form-wrapper h3 {
+    color: var(--primary-color);
+    margin-top: 0;
+    margin-bottom: 25px;
+    font-size: 1.8rem;
+}
+
+.contact-info address p {
+    margin-bottom: 18px;
+    display: flex;
+    align-items: flex-start; /* Align icon top */
+    gap: 15px;
+    font-style: normal;
+    line-height: 1.5;
+}
+.contact-info address p:last-child {
+    margin-bottom: 0;
+}
+
+.contact-info address i {
+    color: var(--secondary-color);
+    font-size: 1.1rem;
+    width: 20px; /* Fixed width for alignment */
+    text-align: center;
+    margin-top: 0.15em; /* Fine-tune vertical alignment */
+    flex-shrink: 0;
+}
+.contact-info address a {
+    color: var(--primary-color);
+    word-break: break-word; /* Prevent long links from breaking layout */
+}
+.contact-info address a:hover,
+.contact-info address a:focus-visible {
+    color: var(--secondary-color);
+}
+
+/* Social Icons in Contact */
+.social-icons {
+    margin-top: 30px;
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.social-icons a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: var(--primary-color);
+    color: var(--white-color);
+    border-radius: 50%;
+    transition: all var(--transition-speed) ease;
+    font-size: 1.1rem;
+}
+
+.social-icons a:hover, .social-icons a:focus-visible {
+    background: var(--secondary-color);
+    transform: scale(1.1);
+    outline: none; /* Handled by global focus-visible */
+    box-shadow: none;
+    text-decoration: none;
+}
+
+
+/* Contact Form */
+.contact-form .form-group {
+    margin-bottom: 25px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--dark-color);
+}
+
+.form-group label span[aria-hidden="true"] {
+    color: var(--danger-color);
+    font-weight: bold;
+    margin-left: 2px;
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="tel"],
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1px solid #ccc;
+    border-radius: var(--border-radius);
+    font-family: var(--font-primary);
+    font-size: 1rem;
+    transition: border-color var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+    background-color: var(--white-color);
+    color: var(--dark-color);
+    line-height: normal; /* Reset line height for inputs */
+}
+.form-group select {
+     /* Ensure select height matches input height */
+     height: calc(1.5em + 28px + 2px); /* Adjust based on padding and border */
+     /* Appearance for custom arrow */
+     appearance: none;
+     -webkit-appearance: none;
+     -moz-appearance: none;
+     background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22 width%3D%2210%22 height%3D%2210%22 fill%3D%22%236c757d%22%3E%3Cpolygon points%3D%220%2C2.5 5%2C7.5 10%2C2.5%22/%3E%3C%2Fsvg%3E');
+     background-repeat: no-repeat;
+     background-position: right 16px center;
+     background-size: 10px 10px;
+     padding-right: 40px; /* Space for arrow */
+}
+/* Style for placeholder option */
+.form-group select:required:invalid {
+    color: var(--gray-color);
+}
+.form-group option {
+    color: var(--dark-color);
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: var(--secondary-color);
+    outline: none; /* Use focus-visible instead */
+    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
+}
+/* Use global focus-visible for keyboard focus */
+.form-group input:focus-visible,
+.form-group select:focus-visible,
+.form-group textarea:focus-visible {
+    outline: 3px solid var(--secondary-color);
+    outline-offset: 1px;
+    box-shadow: none;
+}
+
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 140px;
+}
+
+/* LGPD Checkbox Area */
+.lgpd-check {
+    display: flex;
+    align-items: flex-start; /* Align checkbox top */
+    margin: 25px 0;
+    gap: 10px;
+}
+
+.lgpd-check input[type="checkbox"] {
+    width: 1.1em;
+    height: 1.1em;
+    margin-top: 0.2em; /* Align with text */
+    flex-shrink: 0;
+    accent-color: var(--primary-color);
+    cursor: pointer;
+}
+
+.lgpd-check label {
+    font-size: 0.9rem;
+    color: var(--gray-color);
+    line-height: 1.4;
+    margin-bottom: 0;
+    font-weight: 400;
+    cursor: pointer; /* Make label clickable */
+}
+
+.lgpd-check label a {
+    color: var(--primary-color);
+    text-decoration: underline;
+}
+.lgpd-check label a:hover,
+.lgpd-check label a:focus-visible {
+    color: var(--secondary-color);
+}
+
+#lgpd-desc {
+    font-size: 0.8rem;
+    color: var(--gray-color);
+    display: block;
+    margin-top: 5px;
+    /* Align under the label text, considering checkbox width and gap */
+    margin-left: calc(1.1em + 10px);
+}
+
+/* Style for form submission button */
+.contact-form button[type="submit"] {
+    width: 100%;
+    padding: 15px 30px;
+    font-size: 1.1rem;
+}
+
+/*------------------------------------------------------------------
+  11. Footer
+-------------------------------------------------------------------*/
+.site-footer {
+    background: var(--primary-color);
+    color: rgba(255, 255, 255, 0.85);
+    padding: 50px 0;
+    margin-top: auto; /* Push footer to bottom */
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 30px;
+}
+
+.footer-info {
+    flex: 2; /* Takes more space */
+    min-width: 250px;
+}
+
+.footer-info p,
+.footer-info address {
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    font-style: normal;
+}
+.footer-info p:last-child,
+.footer-info address:last-child {
+     margin-bottom: 0;
+}
+
+.footer-info a {
+    color: var(--white-color);
+    text-decoration: underline;
+}
+.footer-info a:hover,
+.footer-info a:focus-visible {
+    color: var(--secondary-color);
+}
+
+
+.footer-social {
+    flex: 1; /* Takes less space */
+    min-width: 200px;
+    text-align: right; /* Default alignment */
+}
+.footer-social p {
+     font-weight: 600;
+     margin-bottom: 15px;
+     font-size: 1rem;
+     color: var(--white-color);
+}
+
+.footer-social a {
+    color: var(--white-color);
+    font-size: 1.4rem;
+    margin-left: 15px;
+    display: inline-block;
+    border-radius: var(--border-radius); /* For focus outline */
+    transition: color var(--transition-speed) ease, transform var(--transition-speed) ease;
+}
+.footer-social a:first-of-type {
+    margin-left: 0;
+}
+
+.footer-social a:hover, .footer-social a:focus-visible {
+    color: var(--secondary-color);
+    transform: scale(1.1);
+    text-decoration: none;
+    outline: none; /* Handled by global focus-visible */
+    box-shadow: none;
+}
+
+
+/*------------------------------------------------------------------
+  12. Content Pages (LGPD, OAB)
+-------------------------------------------------------------------*/
+.content-page {
+    flex-grow: 1; /* Ensure main content takes available space */
+    padding-bottom: 80px;
+}
+
+.content-page article {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.content-page h1 {
+    margin-bottom: 40px;
+    font-size: 2.5rem;
+    text-align: center;
+}
+.content-page h1::after { /* Decorative underline for H1 */
+    content: '';
+    display: block;
+    width: 100px;
+    height: 3px;
+    background: var(--secondary-color);
+    margin: 15px auto 0;
+    border-radius: 2px;
+}
+
+
+.content-page section {
+    margin-bottom: 40px;
+}
+.content-page section h2 {
+    margin-bottom: 20px;
+    font-size: 1.8rem;
+    border-bottom: 2px solid var(--secondary-color);
+    padding-bottom: 10px;
+    display: inline-block; /* Fit border to text */
+    color: var(--primary-color);
+}
+
+
+.content-page p {
+    margin-bottom: 20px;
+    line-height: 1.8;
+    color: var(--dark-color);
+}
+
+.content-page ul {
+    list-style: disc;
+    margin-left: 25px; /* Indentation */
+    margin-bottom: 25px;
+    padding-left: 15px; /* Space between bullet and text */
+}
+.content-page ul li {
+    margin-bottom: 10px;
+    line-height: 1.7;
+}
+
+.content-page address {
+    background-color: var(--light-color);
+    padding: 20px 25px;
+    border-radius: var(--border-radius);
+    border-left: 4px solid var(--primary-color);
+    margin: 25px 0;
+    font-style: normal;
+    line-height: 1.7;
+}
+.content-page address strong {
+     display: block;
+     margin-bottom: 8px;
+     color: var(--primary-color);
+     font-weight: 600;
+}
+.content-page address a {
+     color: var(--primary-color);
+}
+.content-page address a:hover,
+.content-page address a:focus-visible {
+     color: var(--secondary-color);
+}
+
+/* OAB Page Specific */
+.oab-verification {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center; /* Center items */
+    gap: 25px;
+    margin: 30px 0;
+    background-color: var(--light-color);
+    padding: 30px;
+    border-radius: var(--border-radius);
+    border: 1px solid #e0e0e0;
+}
+
+.oab-verification .btn {
+    flex-shrink: 0; /* Prevent button from shrinking */
+    background-color: var(--primary-color);
+    color: var(--white-color);
+    border-color: var(--primary-color);
+}
+.oab-verification .btn:hover,
+.oab-verification .btn:focus-visible {
+     background-color: var(--secondary-color);
+     border-color: var(--secondary-color);
+     color: var(--primary-color); /* Adjusted for better contrast */
+}
+
+.oab-seal {
+    width: 120px;
+    height: auto;
+    opacity: 0.8;
+}
+.content-page .oab-verification + p { /* Style the paragraph after verification block */
+     margin-top: 30px;
+     font-style: italic;
+     color: var(--gray-color);
+     text-align: center;
+}
+
+
+/*------------------------------------------------------------------
+  13. Centered Pages (Obrigado, 404)
+-------------------------------------------------------------------*/
+.body-centered-page {
+     display: flex;
+     flex-direction: column;
+     min-height: 100vh;
+}
+
+.content-page-centered {
+    flex-grow: 1; /* Take available vertical space */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center content vertically */
+    align-items: center; /* Center content horizontally */
+    text-align: center;
+    padding-top: 40px;
+    padding-bottom: 80px;
+}
+
+.centered-content {
+     max-width: 600px;
+     width: 90%;
+}
+
+.centered-content h1 {
+    margin-bottom: 20px;
+    font-size: 2.5rem;
+}
+
+.centered-content p {
+    margin-bottom: 25px;
+    font-size: 1.1rem;
+    color: var(--gray-color);
+    line-height: 1.7;
+}
+
+.centered-content .btn {
+    margin: 10px 5px; /* Space around buttons if they wrap */
+}
+
+.return-link {
+    margin-top: 30px;
+}
+
+.success-icon,
+.error-icon {
+    font-size: 4rem;
+    margin-bottom: 25px;
+}
+
+.success-icon {
+    color: var(--success-color);
+}
+
+.error-icon {
+    color: var(--danger-color);
+}
+
+/*------------------------------------------------------------------
+  14. WhatsApp Flutuante
+-------------------------------------------------------------------*/
+.whatsapp-float {
+    position: fixed;
+    width: 60px;
+    height: 60px;
+    bottom: 30px;
+    right: 30px;
+    background-color: var(--whatsapp-color);
+    color: var(--white-color);
+    border-radius: 50%;
+    text-align: center;
+    font-size: 30px;
+    box-shadow: 2px 2px 10px rgba(0,0,0,0.2);
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: all var(--transition-speed) ease;
+}
+
+.whatsapp-float i {
+    line-height: 1; /* Better icon centering */
+}
+
+.whatsapp-float:hover,
+.whatsapp-float:focus-visible {
+    background-color: var(--whatsapp-hover-color);
+    color: var(--white-color);
+    transform: scale(1.1);
+    box-shadow: 3px 3px 15px rgba(0,0,0,0.3);
+    text-decoration: none;
+    outline-offset: 3px; /* Ensure focus outline is visible */
+}
+.whatsapp-float:focus {
+    outline: none; /* Handled by focus-visible */
+}
+
+
+/*------------------------------------------------------------------
+  15. Responsive Design
+-------------------------------------------------------------------*/
+
+/* Medium devices (tablets, less than 992px) */
+@media (max-width: 991.98px) {
+    h1 { font-size: 2.5rem; }
+    h2 { font-size: 2rem; }
+    h3 { font-size: 1.6rem; }
+    .section-title { font-size: 2.2rem; }
+
+    .header-container {
+        flex-direction: column; /* Stack logo and nav */
+        align-items: center;
+        gap: 15px;
+        padding-bottom: 10px;
+    }
+    .main-nav ul {
+        justify-content: center; /* Center nav items */
+        gap: 5px 10px; /* Adjust gap for wrapped items */
+    }
+     .main-nav .nav-link {
+         padding: 10px 12px;
+         font-size: 0.9rem;
+     }
+
+    .hero-section {
+        padding: 100px 0 80px;
+        min-height: 50vh;
+    }
+    .hero-content h1 { font-size: 2.5rem; }
+    .hero-content p { font-size: 1.1rem; }
+
+    /* About section already defaults to single column, no change needed here */
+    .about-image {
+        max-width: 350px; /* Slightly smaller image on tablets */
+    }
+
+    /* Contact section already defaults to single column, no change needed here */
+    .contact-info {
+        text-align: center; /* Center contact info block */
+    }
+     .contact-info address {
+        display: inline-block; /* Allow centering */
+        text-align: left; /* Keep text left-aligned */
+    }
+    .contact-info address p {
+        justify-content: flex-start; /* Align icon and text left */
+    }
+    .social-icons {
+        justify-content: center; /* Center social icons */
+    }
+
+     .footer-content {
+        flex-direction: column; /* Stack footer sections */
+        align-items: center; /* Center items */
+        text-align: center;
+        gap: 40px;
+    }
+     .footer-info {
+        text-align: center;
+     }
+     .footer-social {
+        text-align: center;
+        margin-top: 0;
+     }
+     .footer-social a {
+         margin: 0 8px; /* Adjust spacing */
+     }
+
+     .oab-verification {
+         flex-direction: column; /* Stack button and seal */
+         align-items: center;
+         gap: 20px;
+         padding: 25px;
+     }
+
+     .content-page h1 { font-size: 2.2rem; }
+     .content-page section h2 { font-size: 1.6rem; }
+     .centered-content h1 { font-size: 2.2rem; }
+
+     .whatsapp-float {
+        width: 55px;
+        height: 55px;
+        bottom: 20px;
+        right: 20px;
+        font-size: 26px;
+     }
+}
+
+/* Small devices (landscape phones, less than 768px) */
+@media (max-width: 767.98px) {
+    html { font-size: 15px; } /* Slightly smaller base font */
+    h1 { font-size: 2.2rem; }
+    h2 { font-size: 1.8rem; }
+    h3 { font-size: 1.5rem; }
+    .section-title { font-size: 2rem; }
+
+    .section-padding {
+        padding-top: 60px;
+        padding-bottom: 60px;
+    }
+
+    .hero-section {
+        padding: 80px 0 60px;
+        min-height: 40vh;
+    }
+     .hero-content h1 { font-size: 2.2rem; }
+     .hero-content p { font-size: 1rem; }
+
+    /* Areas grid and Testimonials grid already adapt with auto-fit */
+
+    .main-nav ul {
+        gap: 3px 8px; /* Further reduce nav gap */
+    }
+     .main-nav .nav-link {
+         padding: 8px 10px;
+     }
+
+     .content-page h1 { font-size: 2rem; }
+     .content-page section h2 { font-size: 1.5rem; }
+     .centered-content h1 { font-size: 2rem; }
+
+     /* About and Contact sections are already single column */
+}
+
+/* Extra small devices (portrait phones, less than 576px) */
+@media (max-width: 575.98px) {
+     html { font-size: 14px; } /* Smallest base font */
+     h1 { font-size: 2rem; }
+     h2 { font-size: 1.7rem; }
+     h3 { font-size: 1.4rem; }
+     .section-title { font-size: 1.8rem; }
+
+     .logo-title { font-size: 1.5rem; }
+     .logo-subtitle { font-size: 0.8rem; }
+
+     .btn {
+         padding: 10px 20px;
+         font-size: 0.9rem;
+     }
+
+     .container { width: 95%; padding-left: 10px; padding-right: 10px; }
+
+     .hero-section {
+         padding: 60px 0 50px;
+     }
+      .hero-content h1 { font-size: 1.8rem; }
+      .hero-content p { font-size: 0.95rem; }
+
+
+     .form-group input, .form-group select, .form-group textarea {
+         padding: 12px 14px;
+         font-size: 0.95rem;
+     }
+     .lgpd-check { gap: 8px; }
+     #lgpd-desc { margin-left: calc(1.1em + 8px); }
+     .contact-form button[type="submit"] { font-size: 1rem; }
+
+
+     .whatsapp-float {
+        width: 50px;
+        height: 50px;
+        bottom: 15px;
+        right: 15px;
+        font-size: 24px;
+     }
+
+     .content-page h1 { font-size: 1.8rem; }
+     .content-page section h2 { font-size: 1.4rem; }
+     .centered-content h1 { font-size: 1.8rem; }
+     .centered-content p { font-size: 1rem; }
+
+}
